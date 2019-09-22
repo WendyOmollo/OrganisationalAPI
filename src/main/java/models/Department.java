@@ -7,7 +7,7 @@ public class Department {
     private String name;
     private String description;
     private int employees;
-    private int news_id;
+    private int classifiedNews_id;
     private int id;
 
     public Department(String name,String description,int employees){
@@ -40,12 +40,13 @@ public class Department {
         this.employees = employees;
     }
 
-    public int getNews_id() {
-        return news_id;
+
+    public int getClassifiedNews_id() {
+        return classifiedNews_id;
     }
 
-    public void setNews_id(int news_id) {
-        this.news_id = news_id;
+    public void setClassifiedNews_id(int classifiedNews_id) {
+        this.classifiedNews_id = classifiedNews_id;
     }
 
     public int getId() {
@@ -62,7 +63,7 @@ public class Department {
         if (o == null || getClass() != o.getClass()) return false;
         Department that = (Department) o;
         return getEmployees() == that.getEmployees() &&
-                getNews_id() == that.getNews_id() &&
+                getClassifiedNews_id() == that.getClassifiedNews_id() &&
                 getId() == that.getId() &&
                 Objects.equals(getName(), that.getName()) &&
                 Objects.equals(getDescription(), that.getDescription());
@@ -70,6 +71,6 @@ public class Department {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getDescription(), getEmployees(), getNews_id(), getId());
+        return Objects.hash(getName(), getDescription(), getEmployees(), getClassifiedNews_id(), getId());
     }
 }

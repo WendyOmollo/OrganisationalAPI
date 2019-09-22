@@ -7,6 +7,7 @@ public class Employee {
     private int department_id;
     private String position;
     private int id;
+    private int classifiedNews_id;
 
     public Employee(String name, int department_id, String position) {
         this.name = name;
@@ -38,6 +39,18 @@ public class Employee {
         this.position = position;
     }
 
+    public int getClassifiedNews_id() {
+        return classifiedNews_id;
+    }
+
+    public void setClassifiedNews_id(int classifiedNews_id) {
+        this.classifiedNews_id = classifiedNews_id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -48,13 +61,14 @@ public class Employee {
         if (o == null || getClass() != o.getClass()) return false;
         Employee employee = (Employee) o;
         return getDepartment_id() == employee.getDepartment_id() &&
-                id == employee.id &&
+                getId() == employee.getId() &&
+                getClassifiedNews_id() == employee.getClassifiedNews_id() &&
                 Objects.equals(getName(), employee.getName()) &&
                 Objects.equals(getPosition(), employee.getPosition());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getDepartment_id(), getPosition(), id);
+        return Objects.hash(getName(), getDepartment_id(), getPosition(), getId(), getClassifiedNews_id());
     }
 }
