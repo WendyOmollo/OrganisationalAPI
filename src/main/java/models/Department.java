@@ -62,15 +62,14 @@ public class Department {
         if (o == null || getClass() != o.getClass()) return false;
         Department that = (Department) o;
         return getEmployees() == that.getEmployees() &&
-                id == that.id &&
-                getName().equals(that.getName()) &&
-                getDescription().equals(that.getDescription());
+                getNews_id() == that.getNews_id() &&
+                getId() == that.getId() &&
+                Objects.equals(getName(), that.getName()) &&
+                Objects.equals(getDescription(), that.getDescription());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getDescription(), getEmployees(), id);
+        return Objects.hash(getName(), getDescription(), getEmployees(), getNews_id(), getId());
     }
-
-
 }

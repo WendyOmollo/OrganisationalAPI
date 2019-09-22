@@ -30,20 +30,39 @@ public class Sql2oDepartmentDao implements DepartmentDao {
     @Override
     public void addDepartmentToNews(Department department, News news) {
 
+
+
     }
 
     @Override
     public List<Department> getDepartments() {
-        return null;
+        try (Connection con = sql2o.open()) {
+            return con.createQuery("SELECT * FROM departments")
+                    .executeAndFetch(Department.class);
+        }
     }
 
     @Override
     public void deleteById(int id) {
+        String sql = "DELETE from departments WHERE id=:id";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeUpdate();
+        } catch (Sql2oException ex) {
+            System.out.println(ex);
+        }
 
     }
 
     @Override
     public void clearAll() {
+        String sql = "DELETE from departments";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql).executeUpdate();
+        } catch (Sql2oException ex) {
+            System.out.println(ex);
+        }
 
     }
 }
