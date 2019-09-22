@@ -29,11 +29,6 @@ public class Sql2oNewsDao implements NewsDao {
     }
 
     @Override
-    public void addNewsToDepartment(News news, Department department) {
-
-    }
-
-    @Override
     public List<News> getNews() {
         try (Connection con = sql2o.open()) {
             return con.createQuery("SELECT * FROM news")

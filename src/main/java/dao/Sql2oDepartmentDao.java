@@ -1,5 +1,6 @@
 package dao;
 
+import models.ClassifiedNews;
 import models.Department;
 import models.News;
 import org.sql2o.Connection;
@@ -28,7 +29,7 @@ public class Sql2oDepartmentDao implements DepartmentDao {
     }
 
     @Override
-    public void addDepartmentToNews(Department department, News news) {
+    public void addDepartmentToClassifiedNews(Department department, ClassifiedNews classifiedNews) {
 
 
 
