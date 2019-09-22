@@ -7,6 +7,7 @@ import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Sql2oDepartmentDao implements DepartmentDao {
@@ -41,6 +42,12 @@ public class Sql2oDepartmentDao implements DepartmentDao {
             return con.createQuery("SELECT * FROM departments")
                     .executeAndFetch(Department.class);
         }
+    }
+
+    @Override
+    public List<ClassifiedNews> getAllDepartmentsForAClassified(int classifiedNews_id) {
+        List<ClassifiedNews> classifiedNews = new ArrayList<>();
+        return classifiedNews;
     }
 
     @Override

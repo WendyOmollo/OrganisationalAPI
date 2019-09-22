@@ -13,6 +13,7 @@ public interface DepartmentDao {
     void addDepartmentToClassifiedNews(Department department, ClassifiedNews classifiedNews);
 
     List<Department> getDepartments();
+    List<ClassifiedNews> getAllDepartmentsForAClassified(int classifiedNews_id);
 
     void deleteById(int id);
     void clearAll();

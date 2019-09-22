@@ -8,6 +8,7 @@ import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Sql2oEmployeeDao implements EmployeeDao {
@@ -46,6 +47,13 @@ public class Sql2oEmployeeDao implements EmployeeDao {
             return con.createQuery("SELECT * FROM employees")
                     .executeAndFetch(Employee.class);
         }
+    }
+
+    @Override
+    public List<ClassifiedNews> getAllEmployeesForAClassified(int classifiedNews_id) {
+
+        List<ClassifiedNews> classifiedNews = new ArrayList<>();
+        return classifiedNews;
     }
 
     @Override

@@ -7,6 +7,7 @@ import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Sql2oClassifiedNewsDao implements ClassifiedNewsDao {
@@ -43,6 +44,18 @@ public class Sql2oClassifiedNewsDao implements ClassifiedNewsDao {
             return con.createQuery("SELECT * FROM classified_news")
                     .executeAndFetch(ClassifiedNews.class);
         }
+    }
+
+    @Override
+    public List<Department> getAllClassifiedNewsNyDepartment(int department_id) {
+        List<Department> departments = new ArrayList<>();
+        return departments;
+    }
+
+    @Override
+    public List<Employee> getAllClassifiedNewsByEmployee(int employee_id) {
+        List<Employee> employees = new ArrayList<>();
+        return employees;
     }
 
     @Override
