@@ -11,7 +11,7 @@ public interface ClassifiedNewsDao {
     void add(ClassifiedNews classifiedNews);
 
     void addClassifiedNewsToDepartment(ClassifiedNews classifiedNews , Department department);
-    void addEmployeeToClassifiedNews(ClassifiedNews classifiedNews, Employee employee);
+    void addClassifiedNewsToEmployee(ClassifiedNews classifiedNews, Employee employee);
 
     List<ClassifiedNews> getClassifiedNews();
     List<Department> getAllClassifiedNewsNyDepartment(int department_id);

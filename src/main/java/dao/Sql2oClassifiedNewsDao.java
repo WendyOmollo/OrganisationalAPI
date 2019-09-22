@@ -30,11 +30,29 @@ public class Sql2oClassifiedNewsDao implements ClassifiedNewsDao {
 
     @Override
     public void addClassifiedNewsToDepartment(ClassifiedNews classifiedNews, Department department) {
+        String sql = "INSERT INTO classified_news(title,details,department_id,employee_id) VALUES(:title,:details,:department_id,:employee_id)";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .addParameter("department_id", department.getId())
+                    .addParameter("id", classifiedNews.getId())
+                    .executeUpdate();
+        } catch (Sql2oException ex){
+            System.out.println(ex);
+        }
 
     }
 
     @Override
-    public void addEmployeeToClassifiedNews(ClassifiedNews classifiedNews, Employee employee) {
+    public void addClassifiedNewsToEmployee(ClassifiedNews classifiedNews, Employee employee) {
+        String sql = "INSERT INTO classified_news(title,details,department_id,employee_id) VALUES(:title,:details,:department_id,:employee_id)";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .addParameter("employee_id", employee.getId())
+                    .addParameter("id", classifiedNews.getId())
+                    .executeUpdate();
+        } catch (Sql2oException ex){
+            System.out.println(ex);
+        }
 
     }
 

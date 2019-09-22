@@ -33,11 +33,30 @@ public class Sql2oEmployeeDao implements EmployeeDao {
 
     @Override
     public void addEmployeeToDepartment(Employee employee, Department department) {
+        String sql = "INSERT INTO employees(name,department_id,position,classifiedNews_id) VALUES(:name,:department_id,:position,:classifiedNews_id)";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .addParameter("id", employee.getId())
+                    .addParameter("department_id", department.getId())
+                    .executeUpdate();
+        } catch (Sql2oException ex){
+            System.out.println(ex);
+        }
 
     }
 
     @Override
     public void addClassifiedNewsToEmployee(Employee employee, ClassifiedNews classifiedNews) {
+        String sql = "INSERT INTO employees(name,department_id,position,classifiedNews_id) VALUES(:name,:department_id,:position,:classifiedNews_id)";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .addParameter("id", employee.getId())
+                    .addParameter("classifiedNews_id", classifiedNews.getId())
+                    .executeUpdate();
+        } catch (Sql2oException ex){
+            System.out.println(ex);
+        }
+
 
     }
 

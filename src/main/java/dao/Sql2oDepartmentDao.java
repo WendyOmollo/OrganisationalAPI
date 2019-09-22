@@ -31,10 +31,30 @@ public class Sql2oDepartmentDao implements DepartmentDao {
 
     @Override
     public void addDepartmentToClassifiedNews(Department department, ClassifiedNews classifiedNews) {
-
-
-
+        String sql = "INSERT INTO departments(name,description,employees,classifiedNews_id) VALUES(:name,:description,:employees,:classifiedNews_id)";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .addParameter("id", department.getId())
+                    .addParameter("classifiedNews_id", classifiedNews.getId())
+                    .executeUpdate();
+        } catch (Sql2oException ex){
+            System.out.println(ex);
+        }
     }
+
+    @Override
+    public void addClassifiedNewsToDepartment(ClassifiedNews classifiedNews, Department department) {
+        String sql = "INSERT INTO departments(name,description,employees,classifiedNews_id) VALUES(:name,:description,:employees,:classifiedNews_id)";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .addParameter("id", department.getId())
+                    .addParameter("classifiedNews_id", classifiedNews.getId())
+                    .executeUpdate();
+        } catch (Sql2oException ex){
+            System.out.println(ex);
+        }
+    }
+
 
     @Override
     public List<Department> getDepartments() {
