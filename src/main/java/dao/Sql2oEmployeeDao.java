@@ -1,5 +1,6 @@
 package dao;
 
+import models.ClassifiedNews;
 import models.Department;
 import models.Employee;
 import models.News;
@@ -16,7 +17,7 @@ public class Sql2oEmployeeDao implements EmployeeDao {
 
     @Override
     public void add(Employee employee) {
-        String sql = "INSERT INTO employees(name,department_id,position) VALUES(:name,:department_id,:position)";
+        String sql = "INSERT INTO employees(name,department_id,position,classifiedNews_id) VALUES(:name,:department_id,:position,:classifiedNews_id)";
         try (Connection con = sql2o.open()) {
             int id = (int) con.createQuery(sql, true)
                     .bind(employee)
@@ -31,6 +32,11 @@ public class Sql2oEmployeeDao implements EmployeeDao {
 
     @Override
     public void addEmployeeToDepartment(Employee employee, Department department) {
+
+    }
+
+    @Override
+    public void addClassifiedNewsToEmployee(Employee employee, ClassifiedNews classifiedNews) {
 
     }
 
