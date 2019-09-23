@@ -134,8 +134,8 @@ public class Sql2oDepartmentDao implements DepartmentDao {
     @Override
     public void deleteById(int id) {
         String sql = "DELETE from departments WHERE id=:id";
-        String deleteJoin = "DELETE from departments WHERE classifiedNews_id = :classifiedNews_id";
-        String deleteJoinEmployee = "DELETE from departments WHERE employee_id = :employee_id";
+        String deleteJoin = "DELETE from departmentId_classifiedId WHERE classifiedNews_id = :classifiedNews_id";
+        String deleteJoinEmployee = "DELETE from departmentId_employeeId WHERE employee_id = :employee_id";
         try (Connection con = sql2o.open()) {
             con.createQuery(sql)
                     .addParameter("id", id)

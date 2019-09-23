@@ -109,10 +109,19 @@ public class Sql2oClassifiedNewsDao implements ClassifiedNewsDao {
     @Override
     public void deleteById(int id) {
         String sql = "DELETE from classified_news WHERE id=:id";
+        String deleteJoin = "DELETE from departmentId_classifiedId WHERE department_id = :department_id";
+        String deleteJoinClassified = "DELETE from employeeId_classifiedId WHERE employee_id = :employee_id";
         try (Connection con = sql2o.open()) {
             con.createQuery(sql)
                     .addParameter("id", id)
                     .executeUpdate();
+            con.createQuery(deleteJoin)
+                    .addParameter("department_id", id)
+                    .executeUpdate();
+            con.createQuery(deleteJoin)
+                    .addParameter("employee_id", id)
+                    .executeUpdate();
+
         } catch (Sql2oException ex) {
             System.out.println(ex);
         }
