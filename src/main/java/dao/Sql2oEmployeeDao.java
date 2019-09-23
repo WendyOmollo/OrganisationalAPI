@@ -112,9 +112,13 @@ public class Sql2oEmployeeDao implements EmployeeDao {
     @Override
     public void deleteById(int id) {
         String sql = "DELETE from employees WHERE id=:id";
+        String deleteJoin = "DELETE from employees WHERE classifiedNews_id = :classifiedNews_id";
         try (Connection con = sql2o.open()) {
             con.createQuery(sql)
                     .addParameter("id", id)
+                    .executeUpdate();
+            con.createQuery(deleteJoin)
+                    .addParameter("classifiedNews_id",id)
                     .executeUpdate();
         } catch (Sql2oException ex) {
             System.out.println(ex);
