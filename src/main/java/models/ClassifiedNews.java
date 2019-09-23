@@ -3,23 +3,13 @@ package models;
 import java.util.Objects;
 
 public class ClassifiedNews  extends News{
-    private int id;
+
+
 
     public ClassifiedNews(String title, String details) {
         super(title, details);
-        this.id = id;
-    }
 
-    @Override
-    public int getId() {
-        return id;
     }
-
-    @Override
-    public void setId(int id) {
-        this.id = id;
-    }
-
 
     @Override
     public boolean equals(Object o) {
