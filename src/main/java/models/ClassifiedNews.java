@@ -4,13 +4,10 @@ import java.util.Objects;
 
 public class ClassifiedNews  extends News{
     private int id;
-    private int employee_id;
-    private int department_id;
 
     public ClassifiedNews(String title, String details) {
         super(title, details);
-        this.employee_id = employee_id;
-        this.department_id = department_id;
+        this.id = id;
     }
 
     @Override
@@ -23,21 +20,6 @@ public class ClassifiedNews  extends News{
         this.id = id;
     }
 
-    public int getEmployee_id() {
-        return employee_id;
-    }
-
-    public void setEmployee_id(int employee_id) {
-        this.employee_id = employee_id;
-    }
-
-    public int getDepartment_id() {
-        return department_id;
-    }
-
-    public void setDepartment_id(int department_id) {
-        this.department_id = department_id;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -45,13 +27,12 @@ public class ClassifiedNews  extends News{
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         ClassifiedNews that = (ClassifiedNews) o;
-        return getId() == that.getId() &&
-                getEmployee_id() == that.getEmployee_id() &&
-                getDepartment_id() == that.getDepartment_id();
+        return getId() == that.getId();
+
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getId(), getEmployee_id(), getDepartment_id());
+        return Objects.hash(super.hashCode(), getId());
     }
 }

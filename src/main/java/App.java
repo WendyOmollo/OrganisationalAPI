@@ -15,7 +15,7 @@ public class App {
                 Connection conn;
                 Gson gson = new Gson();
 
-                String connectionString = "jdbc:h2:~/jadle.db;INIT=RUNSCRIPT from 'classpath:db/create.sql'";
+                String connectionString = "jdbc:h2:~/organisation.db;INIT=RUNSCRIPT from 'classpath:db/create.sql'";
                 Sql2o sql2o = new Sql2o(connectionString, "", "");
 
                 employeeDao = new Sql2oEmployeeDao(sql2o);
@@ -36,7 +36,7 @@ public class App {
                     return gson.toJson(departmentDao.findById(departmentId));
                 });
 
-                post("departments/new","application/json",(request, response) -> {
+                post("/departments/new","application/json",(request, response) -> {
                     Department department = gson.fromJson(request.body(),Department.class);
                     departmentDao.add(department);
                     response.status(201);
