@@ -18,7 +18,7 @@ public class Sql2oEmployeeDao implements EmployeeDao {
 
     @Override
     public void add(Employee employee) {
-        String sql = "INSERT INTO employees(name,department_id,position,classifiedNews_id) VALUES(:name,:department_id,:position,:classifiedNews_id)";
+        String sql = "INSERT INTO employees(name,position) VALUES(:name,:position)";
         try (Connection con = sql2o.open()) {
             int id = (int) con.createQuery(sql, true)
                     .bind(employee)
@@ -33,11 +33,11 @@ public class Sql2oEmployeeDao implements EmployeeDao {
 
     @Override
     public void addEmployeeToDepartment(Employee employee, Department department) {
-        String sql = "INSERT INTO employees(name,department_id,position,classifiedNews_id) VALUES(:name,:department_id,:position,:classifiedNews_id)";
+        String sql = "INSERT INTO departmentId_employeeId(department_id,employee_id) VALUES(:department_id,:employee_id)";
         try (Connection con = sql2o.open()) {
             con.createQuery(sql)
-                    .addParameter("id", employee.getId())
                     .addParameter("department_id", department.getId())
+                    .addParameter("employee_id", employee.getId())
                     .executeUpdate();
         } catch (Sql2oException ex){
             System.out.println(ex);
@@ -47,17 +47,15 @@ public class Sql2oEmployeeDao implements EmployeeDao {
 
     @Override
     public void addClassifiedNewsToEmployee(Employee employee, ClassifiedNews classifiedNews) {
-        String sql = "INSERT INTO employees(name,department_id,position,classifiedNews_id) VALUES(:name,:department_id,:position,:classifiedNews_id)";
+        String sql = "INSERT INTO employeeId_classifiedId(employee_id,classifiedNews_id) VALUES(:employee_id,:classifiedNews_id)";
         try (Connection con = sql2o.open()) {
             con.createQuery(sql)
-                    .addParameter("id", employee.getId())
+                    .addParameter("employee_id", employee.getId())
                     .addParameter("classifiedNews_id", classifiedNews.getId())
                     .executeUpdate();
         } catch (Sql2oException ex){
             System.out.println(ex);
         }
-
-
     }
 
     @Override
@@ -69,12 +67,12 @@ public class Sql2oEmployeeDao implements EmployeeDao {
     }
 
     @Override
-    public List<ClassifiedNews> getAllClassifiedsForAnEmployee(int id) {
+    public List<ClassifiedNews> getAllClassifiedsForAnEmployee(int employeeId) {
         ArrayList<ClassifiedNews> classifiedNews = new ArrayList<>();
-        String joinQuery ="SELECT classifiedNews_id FROM employees WHERE id = :id";
+        String joinQuery ="SELECT classifiedNews_id FROM employeeId_classifiedId WHERE employee_id = :employee_id";
         try(Connection con = sql2o.open()){
             List<Integer> allClassifiedsIds = con.createQuery(joinQuery)
-                    .addParameter("id",id)
+                    .addParameter("id",employeeId)
                     .executeAndFetch(Integer.class);
             for(Integer classifiedId :allClassifiedsIds){
                 String classifiedQuery = "SELECT FROM classified_news WHERE id=:classifiedNews_id";
@@ -90,23 +88,24 @@ public class Sql2oEmployeeDao implements EmployeeDao {
     }
 
     @Override
-    public List<Department> getAllEmployeesFromADepartment(int id) {
-        ArrayList<Department> departments = new ArrayList<>();
-        String joinQuery = "SELECT department_id FROM employees where id=:id";
+    public List<Employee> getAllEmployeesFromADepartment(int departmentId) {
+        ArrayList<Employee> employees = new ArrayList<>();
+        String joinQuery = "SELECT employeeId FROM departmentId_employeeId where department_id =:department_id ";
         try(Connection con = sql2o.open()){
-            List<Integer> allDepartmentsIds = con.createQuery(joinQuery)
-                    .addParameter("id",id)
+            List<Integer> allEmployeesIds = con.createQuery(joinQuery)
+                    .addParameter("departmentId",departmentId)
                     .executeAndFetch(Integer.class);
-            for(Integer departmentId : allDepartmentsIds){
-                String departmentQuery = "SELECT FROM departments WHERE id=:department_id";
-                departments.add(con.createQuery(departmentQuery)
-                        .addParameter("department_id",departmentId)
-                        .executeAndFetchFirst(Department.class));
+            for(Integer employeeId:allEmployeesIds){
+                String employeeQuery = "SELECT FROM employees WHERE id:employeeId";
+                employees.add(con.createQuery(employeeQuery)
+                        .addParameter("employeeId",employeeId)
+                        .executeAndFetchFirst(Employee.class));
             }
-        }catch (Sql2oException ex){
+
+        }catch(Sql2oException ex){
             System.out.println(ex);
         }
-        return departments;
+        return employees;
     }
 
     @Override

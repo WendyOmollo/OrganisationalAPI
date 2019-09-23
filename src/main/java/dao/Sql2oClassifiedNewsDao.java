@@ -16,7 +16,7 @@ public class Sql2oClassifiedNewsDao implements ClassifiedNewsDao {
     public Sql2oClassifiedNewsDao(Sql2o sql2o) { this.sql2o = sql2o; }
     @Override
     public void add(ClassifiedNews classifiedNews) {
-    String sql = "INSERT INTO classified_news(title,details,department_id,employee_id) VALUES(:title,:details,:department_id,:employee_id)";
+    String sql = "INSERT INTO classified_news(title,details) VALUES(:title,:details)";
         try (Connection con = sql2o.open()) {
             int id = (int) con.createQuery(sql, true)
                     .bind(classifiedNews)
@@ -30,25 +30,24 @@ public class Sql2oClassifiedNewsDao implements ClassifiedNewsDao {
 
     @Override
     public void addClassifiedNewsToDepartment(ClassifiedNews classifiedNews, Department department) {
-        String sql = "INSERT INTO classified_news(title,details,department_id,employee_id) VALUES(:title,:details,:department_id,:employee_id)";
+        String sql = "INSERT INTO departmentId_classifiedId(department_id,classifiedNews_id) VALUES(:department_id:classifiedNews_id)";
         try (Connection con = sql2o.open()) {
             con.createQuery(sql)
                     .addParameter("department_id", department.getId())
-                    .addParameter("id", classifiedNews.getId())
+                    .addParameter("classifiedNews_id", classifiedNews.getId())
                     .executeUpdate();
         } catch (Sql2oException ex){
             System.out.println(ex);
         }
-
     }
 
     @Override
     public void addClassifiedNewsToEmployee(ClassifiedNews classifiedNews, Employee employee) {
-        String sql = "INSERT INTO classified_news(title,details,department_id,employee_id) VALUES(:title,:details,:department_id,:employee_id)";
+        String sql = "INSERT INTO employeeId_classifiedId(employee_id,classifiedNews_id) VALUES(:employee_id,:classifiedNews_id)";
         try (Connection con = sql2o.open()) {
             con.createQuery(sql)
                     .addParameter("employee_id", employee.getId())
-                    .addParameter("id", classifiedNews.getId())
+                    .addParameter("classifiedNews_id", classifiedNews.getId())
                     .executeUpdate();
         } catch (Sql2oException ex){
             System.out.println(ex);
@@ -65,45 +64,47 @@ public class Sql2oClassifiedNewsDao implements ClassifiedNewsDao {
     }
 
     @Override
-    public List<Department> getAllClassifiedNewsByDepartment(int id) {
-        ArrayList<Department> departments = new ArrayList<>();
-        String joinQuery = "SELECT department_id FROM classified_news where id=:id";
+    public List<ClassifiedNews> getAllClassifiedNewsByDepartment(int departmentId) {
+        ArrayList<ClassifiedNews> classifiedNews = new ArrayList<>();
+        String joinQuery ="SELECT classifiedNews_id FROM departmentId_classifiedId WHERE department_id = :department_id";
         try(Connection con = sql2o.open()){
-            List<Integer> allDepartmentsIds = con.createQuery(joinQuery)
-                    .addParameter("id",id)
+            List<Integer> allClassifiedsIds = con.createQuery(joinQuery)
+                    .addParameter("departmentId",departmentId)
                     .executeAndFetch(Integer.class);
-            for(Integer departmentId : allDepartmentsIds){
-                String departmentQuery = "SELECT FROM departments WHERE id=:department_id";
-                departments.add(con.createQuery(departmentQuery)
-                            .addParameter("department_id",departmentId)
-                        .executeAndFetchFirst(Department.class));
+            for(Integer classifiedId :allClassifiedsIds){
+                String classifiedQuery = "SELECT FROM classified_news WHERE id=:classifiedNews_id";
+                classifiedNews.add(con.createQuery(classifiedQuery)
+                        .addParameter("classifiedNews_id",classifiedId)
+                        .executeAndFetchFirst(ClassifiedNews.class));
             }
-        }catch (Sql2oException ex){
+
+        }catch(Sql2oException ex){
             System.out.println(ex);
         }
-        return departments;
+        return classifiedNews;
     }
 
     @Override
-    public List<Employee> getAllClassifiedNewsByEmployee(int id) {
-        ArrayList<Employee> employees = new ArrayList<>();
-        String joinQuery = "SELECT employee_id FROM classified_news where id =:id ";
-            try(Connection con = sql2o.open()){
-                List<Integer> allEmployeesIds = con.createQuery(joinQuery)
-                        .addParameter("id",id)
-                        .executeAndFetch(Integer.class);
-                for(Integer employeeId:allEmployeesIds){
-                    String employeeQuery = "SELECT FROM employees WHERE id:employee_id";
-                    employees.add(con.createQuery(employeeQuery)
-                            .addParameter("employee_id",employeeId)
-                            .executeAndFetchFirst(Employee.class));
-                }
-
-            }catch(Sql2oException ex){
-                System.out.println(ex);
+    public List<ClassifiedNews> getAllClassifiedNewsByEmployee(int employeeId) {
+        ArrayList<ClassifiedNews> classifiedNews = new ArrayList<>();
+        String joinQuery ="SELECT classifiedNews_id FROM employeeId_classifiedId WHERE employee_id = :employee_id";
+        try(Connection con = sql2o.open()){
+            List<Integer> allClassifiedsIds = con.createQuery(joinQuery)
+                    .addParameter("id",employeeId)
+                    .executeAndFetch(Integer.class);
+            for(Integer classifiedId :allClassifiedsIds){
+                String classifiedQuery = "SELECT FROM classified_news WHERE id=:classifiedNews_id";
+                classifiedNews.add(con.createQuery(classifiedQuery)
+                        .addParameter("classifiedNews_id",classifiedId)
+                        .executeAndFetchFirst(ClassifiedNews.class));
             }
-        return employees;
+
+        }catch(Sql2oException ex){
+            System.out.println(ex);
+        }
+        return classifiedNews;
     }
+
 
     @Override
     public void deleteById(int id) {
