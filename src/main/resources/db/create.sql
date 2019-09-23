@@ -5,6 +5,7 @@ id int PRIMARY KEY auto_increment,
 name VARCHAR,
 description VARCHAR,
 employees INTEGER,
+employee_id INTEGER,
 classfiedNews_id INTEGER
 );
 

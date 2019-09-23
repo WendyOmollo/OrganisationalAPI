@@ -69,10 +69,44 @@ public class Sql2oEmployeeDao implements EmployeeDao {
     }
 
     @Override
-    public List<ClassifiedNews> getAllEmployeesForAClassified(int classifiedNews_id) {
+    public List<ClassifiedNews> getAllClassifiedsForAnEmployee(int id) {
+        ArrayList<ClassifiedNews> classifiedNews = new ArrayList<>();
+        String joinQuery ="SELECT classifiedNews_id FROM employees WHERE id = :id";
+        try(Connection con = sql2o.open()){
+            List<Integer> allClassifiedsIds = con.createQuery(joinQuery)
+                    .addParameter("id",id)
+                    .executeAndFetch(Integer.class);
+            for(Integer classifiedId :allClassifiedsIds){
+                String classifiedQuery = "SELECT FROM classified_news WHERE id=:classifiedNews_id";
+                classifiedNews.add(con.createQuery(classifiedQuery)
+                .addParameter("classifiedNews_id",classifiedId)
+                .executeAndFetchFirst(ClassifiedNews.class));
+            }
 
-        List<ClassifiedNews> classifiedNews = new ArrayList<>();
+        }catch(Sql2oException ex){
+            System.out.println(ex);
+        }
         return classifiedNews;
+    }
+
+    @Override
+    public List<Department> getAllEmployeesFromADepartment(int id) {
+        ArrayList<Department> departments = new ArrayList<>();
+        String joinQuery = "SELECT department_id FROM employees where id=:id";
+        try(Connection con = sql2o.open()){
+            List<Integer> allDepartmentsIds = con.createQuery(joinQuery)
+                    .addParameter("id",id)
+                    .executeAndFetch(Integer.class);
+            for(Integer departmentId : allDepartmentsIds){
+                String departmentQuery = "SELECT FROM departments WHERE id=:department_id";
+                departments.add(con.createQuery(departmentQuery)
+                        .addParameter("department_id",departmentId)
+                        .executeAndFetchFirst(Department.class));
+            }
+        }catch (Sql2oException ex){
+            System.out.println(ex);
+        }
+        return departments;
     }
 
     @Override

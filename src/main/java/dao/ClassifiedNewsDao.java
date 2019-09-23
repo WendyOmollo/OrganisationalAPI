@@ -14,8 +14,8 @@ public interface ClassifiedNewsDao {
     void addClassifiedNewsToEmployee(ClassifiedNews classifiedNews, Employee employee);
 
     List<ClassifiedNews> getClassifiedNews();
-    List<Department> getAllClassifiedNewsNyDepartment(int department_id);
-    List<Employee> getAllClassifiedNewsByEmployee(int employee_id);
+    List<Department> getAllClassifiedNewsByDepartment(int id);
+    List<Employee> getAllClassifiedNewsByEmployee(int id);
 
     void deleteById(int id);
     void clearAll();
