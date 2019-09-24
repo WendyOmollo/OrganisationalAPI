@@ -1,5 +1,8 @@
 SET MODE PostgreSQL;
 
+
+--CREATE DATABASE organisation;
+
 CREATE TABLE IF NOT EXISTS departments(
 id int PRIMARY KEY auto_increment,
 name VARCHAR,
