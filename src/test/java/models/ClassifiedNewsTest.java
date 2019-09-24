@@ -34,11 +34,11 @@ public class ClassifiedNewsTest {
         assertEquals("Into the water", testClassified.getTitle());
     }
     @Test
-            public void addingClassifiedNewsSetsDetails() throws Exception{
+    public void addingClassifiedNewsSetsDetails() throws Exception{
         ClassifiedNews testClassified = setupClassifiedNews();
         assertEquals("A young girl decided to immerse herself in books because she believed she has treasure inside books",testClassified.getDetails());
-
     }
+
     @Test
     public void addNews_equalsFirstNews() throws Exception{
         ClassifiedNews testClassified = setupClassifiedNews();

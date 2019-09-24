@@ -4,11 +4,8 @@ import java.util.Objects;
 
 public class ClassifiedNews  extends News{
 
-
-
     public ClassifiedNews(String title, String details) {
         super(title, details);
-
     }
 
     @Override
@@ -18,7 +15,6 @@ public class ClassifiedNews  extends News{
         if (!super.equals(o)) return false;
         ClassifiedNews that = (ClassifiedNews) o;
         return getId() == that.getId();
-
     }
 
     @Override

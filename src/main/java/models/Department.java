@@ -40,9 +40,6 @@ public class Department {
     }
 
 
-
-
-
     public int getId() {
         return id;
     }
