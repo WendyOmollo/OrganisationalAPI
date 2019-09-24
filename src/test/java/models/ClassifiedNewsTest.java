@@ -39,5 +39,11 @@ public class ClassifiedNewsTest {
         assertEquals("A young girl decided to immerse herself in books because she believed she has treasure inside books",testClassified.getDetails());
 
     }
+    @Test
+    public void addNews_equalsFirstNews() throws Exception{
+        ClassifiedNews testClassified = setupClassifiedNews();
+        ClassifiedNews testClassifiedTwo = setupClassifiedNews();
+        assertTrue(testClassified.equals(testClassifiedTwo));
+    }
 
 }
