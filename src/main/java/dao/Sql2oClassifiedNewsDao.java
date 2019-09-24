@@ -51,21 +51,6 @@ public class Sql2oClassifiedNewsDao implements ClassifiedNewsDao {
     }
 
     @Override
-    public void addClassifiedNewsToEmployee(ClassifiedNews classifiedNews, Employee employee) {
-        String sql = "INSERT INTO employeeId_classifiedId(employee_id,classifiedNews_id) VALUES(:employee_id,:classifiedNews_id)";
-        try (Connection con = sql2o.open()) {
-            con.createQuery(sql)
-                    .addParameter("employee_id", employee.getId())
-                    .addParameter("classifiedNews_id", classifiedNews.getId())
-                    .executeUpdate();
-        } catch (Sql2oException ex){
-            System.out.println(ex);
-        }
-    }
-
-
-
-    @Override
     public List<Department> getAllDepartmentsForAClassifiedNews(int classifiedNewsId) {
         ArrayList<Department> departments = new ArrayList<>();
         String joinQuery ="SELECT department_id FROM departments_classifiedNews WHERE classifiedNews_id = :classifiedNewsId";
@@ -84,28 +69,6 @@ public class Sql2oClassifiedNewsDao implements ClassifiedNewsDao {
         }
         return departments;
     }
-
-    @Override
-    public List<ClassifiedNews> getAllClassifiedNewsByEmployee(int employeeId) {
-        ArrayList<ClassifiedNews> classifiedNews = new ArrayList<>();
-        String joinQuery ="SELECT classifiedNews_id FROM employeeId_classifiedId WHERE employee_id = :employee_id";
-        try(Connection con = sql2o.open()){
-            List<Integer> allClassifiedsIds = con.createQuery(joinQuery)
-                    .addParameter("id",employeeId)
-                    .executeAndFetch(Integer.class);
-            for(Integer classifiedId :allClassifiedsIds){
-                String classifiedQuery = "SELECT FROM classified_news WHERE id=:classifiedNews_id";
-                classifiedNews.add(con.createQuery(classifiedQuery)
-                        .addParameter("classifiedNews_id",classifiedId)
-                        .executeAndFetchFirst(ClassifiedNews.class));
-            }
-
-        }catch(Sql2oException ex){
-            System.out.println(ex);
-        }
-        return classifiedNews;
-    }
-
 
     @Override
     public void deleteById(int id) {
