@@ -4,14 +4,12 @@ import java.util.Objects;
 
 public class Employee {
     private String name;
-
     private String position;
     private int id;
 
 
-    public Employee(String name, int department_id, String position) {
+    public Employee(String name, String position) {
         this.name = name;
-
         this.position = position;
     }
 
