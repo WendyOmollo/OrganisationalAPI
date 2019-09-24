@@ -71,6 +71,16 @@ public class Sql2oClassifiedNewsDao implements ClassifiedNewsDao {
     }
 
     @Override
+    public ClassifiedNews findById(int id) {
+        String sql = "SELECT * FROM classified_news WHERE id =:id";
+        try(Connection con = sql2o.open()){
+            return con.createQuery(sql)
+                    .addParameter("id",id)
+                    .executeAndFetchFirst(ClassifiedNews.class);
+        }
+    }
+
+    @Override
     public void deleteById(int id) {
         String sql = "DELETE from classified_news WHERE id = :id";
         String deleteJoin = "DELETE from departmentId_classifiedId WHERE department_id = :department_id";

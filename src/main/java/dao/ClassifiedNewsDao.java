@@ -16,6 +16,9 @@ public interface ClassifiedNewsDao {
 
     List<Department> getAllDepartmentsForAClassifiedNews(int id);
 
+    ClassifiedNews findById(int id);
+
     void deleteById(int id);
+
     void clearAll();
 }
