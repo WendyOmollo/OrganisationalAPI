@@ -3,6 +3,7 @@ import exceptions.ApiException;
 import models.ClassifiedNews;
 import models.Department;
 import models.Employee;
+import models.News;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import static spark.Spark.*;
@@ -60,6 +61,14 @@ public class App {
                     int classifiedId = Integer.parseInt(request.params("id"));
                     return gson.toJson(classifiedNewsDao.findById(classifiedId));
                 });
+                get("/news","application/json",(request, response) -> {
+                    return gson.toJson(newsDao.getNews());
+
+                });
+                get("/news/:id","application/json",(request, response) -> {
+                    int newsId = Integer.parseInt(request.params("id"));
+                    return gson.toJson(newsDao.findById(newsId));
+                });
 
                 post("/departments/new", "application/json", (request, response) -> {
                     Department department = gson.fromJson(request.body(), Department.class);
@@ -79,6 +88,12 @@ public class App {
                     classifiedNewsDao.add(classifiedNews);
                     response.status(201);
                     return gson.toJson(classifiedNews);
+                });
+                post("/news/new","application/json",(request, response) -> {
+                    News news = gson.fromJson(request.body(),News.class);
+                    newsDao.add(news);
+                    response.status(201);
+                    return  gson.toJson(news);
                 });
 
                 exception(ApiException.class, (exc, req, res) -> {
