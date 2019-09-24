@@ -25,14 +25,12 @@ public class App {
                 conn = sql2o.open();
 
                 get("/departments","application/json",(request, response) -> {
-                    response.type("application/json");
                     return gson.toJson(departmentDao.getDepartments());
                 });
 
                 get("/departments/:id","application/json",(request, response) -> {
                     response.type("application/json");
                     int departmentId = Integer.parseInt(request.params("id"));
-                    response.type("application/json");
                     return gson.toJson(departmentDao.findById(departmentId));
                 });
 
@@ -40,8 +38,12 @@ public class App {
                     Department department = gson.fromJson(request.body(),Department.class);
                     departmentDao.add(department);
                     response.status(201);
-                    response.type("application/json");
                     return gson.toJson(department);
                 });
+
+                after((req, res) ->{
+                    res.type("application/json");
+                });
+
             }
         }
