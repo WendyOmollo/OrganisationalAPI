@@ -25,7 +25,7 @@ title VARCHAR,
 details VARCHAR,
 );
 
-CREATE TABLE IF NOT EXISTS departmentId_classifiedId(
+CREATE TABLE IF NOT EXISTS departments_classifiedNews(
 id int PRIMARY KEY auto_increment,
 department_id INTEGER,
 classifiedNews_id INTEGER,

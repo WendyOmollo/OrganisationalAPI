@@ -11,10 +11,13 @@ public interface ClassifiedNewsDao {
     void add(ClassifiedNews classifiedNews);
 
     void addClassifiedNewsToDepartment(ClassifiedNews classifiedNews , Department department);
+
     void addClassifiedNewsToEmployee(ClassifiedNews classifiedNews, Employee employee);
 
     List<ClassifiedNews> getClassifiedNews();
-    List<ClassifiedNews> getAllClassifiedNewsByDepartment(int departmentId);
+
+    List<Department> getAllDepartmentsForAClassifiedNews(int id);
+
     List<ClassifiedNews> getAllClassifiedNewsByEmployee(int employeeId);
 
     void deleteById(int id);

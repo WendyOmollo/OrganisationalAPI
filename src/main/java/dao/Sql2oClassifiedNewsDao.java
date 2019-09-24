@@ -30,12 +30,20 @@ public class Sql2oClassifiedNewsDao implements ClassifiedNewsDao {
     }
 
     @Override
+    public List<ClassifiedNews> getClassifiedNews() {
+        try (Connection con = sql2o.open()) {
+            return con.createQuery("SELECT * FROM classified_news")
+                    .executeAndFetch(ClassifiedNews.class);
+        }
+    }
+
+    @Override
     public void addClassifiedNewsToDepartment(ClassifiedNews classifiedNews, Department department) {
-        String sql = "INSERT INTO departmentId_classifiedId(department_id,classifiedNews_id) VALUES(:department_id:classifiedNews_id)";
+        String sql = "INSERT INTO departments_classifiedNews(department_id,classifiedNews_id) VALUES(:departmentId,:classifiedNewsId)";
         try (Connection con = sql2o.open()) {
             con.createQuery(sql)
-                    .addParameter("department_id", department.getId())
-                    .addParameter("classifiedNews_id", classifiedNews.getId())
+                    .addParameter("departmentId", department.getId())
+                    .addParameter("classifiedNewsId", classifiedNews.getId())
                     .executeUpdate();
         } catch (Sql2oException ex){
             System.out.println(ex);
@@ -53,36 +61,28 @@ public class Sql2oClassifiedNewsDao implements ClassifiedNewsDao {
         } catch (Sql2oException ex){
             System.out.println(ex);
         }
-
     }
 
-    @Override
-    public List<ClassifiedNews> getClassifiedNews() {
-        try (Connection con = sql2o.open()) {
-            return con.createQuery("SELECT * FROM classified_news")
-                    .executeAndFetch(ClassifiedNews.class);
-        }
-    }
+
 
     @Override
-    public List<ClassifiedNews> getAllClassifiedNewsByDepartment(int departmentId) {
-        ArrayList<ClassifiedNews> classifiedNews = new ArrayList<>();
-        String joinQuery ="SELECT classifiedNews_id FROM departmentId_classifiedId WHERE department_id = :department_id";
+    public List<Department> getAllDepartmentsForAClassifiedNews(int classifiedNewsId) {
+        ArrayList<Department> departments = new ArrayList<>();
+        String joinQuery ="SELECT department_id FROM departments_classifiedNews WHERE classifiedNews_id = :classifiedNewsId";
         try(Connection con = sql2o.open()){
-            List<Integer> allClassifiedsIds = con.createQuery(joinQuery)
-                    .addParameter("departmentId",departmentId)
+            List<Integer> allDepartmentsIds = con.createQuery(joinQuery)
+                    .addParameter("classifiedNewsId",classifiedNewsId)
                     .executeAndFetch(Integer.class);
-            for(Integer classifiedId :allClassifiedsIds){
-                String classifiedQuery = "SELECT FROM classified_news WHERE id=:classifiedNews_id";
-                classifiedNews.add(con.createQuery(classifiedQuery)
-                        .addParameter("classifiedNews_id",classifiedId)
-                        .executeAndFetchFirst(ClassifiedNews.class));
+            for(Integer departmentId :allDepartmentsIds){
+                String departmentQuery = "SELECT * FROM departments WHERE id = :departmentId";
+                departments.add(con.createQuery(departmentQuery)
+                        .addParameter("departmentId",departmentId)
+                        .executeAndFetchFirst(Department.class));
             }
-
         }catch(Sql2oException ex){
             System.out.println(ex);
         }
-        return classifiedNews;
+        return departments;
     }
 
     @Override

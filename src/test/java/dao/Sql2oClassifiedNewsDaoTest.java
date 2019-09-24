@@ -1,11 +1,14 @@
 package dao;
 
 import models.ClassifiedNews;
+import models.Department;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
+
+import java.util.concurrent.Callable;
 
 import static org.junit.Assert.*;
 
@@ -39,9 +42,15 @@ public class Sql2oClassifiedNewsDaoTest {
         classifiedNewsDao.add(classifiedNews);
         return classifiedNews;
     }
+
+    public Department setUpDepartment(){
+        Department department = new Department("Hospitality","Found in love",24);
+        departmentDao.add(department);
+        return department;
+    }
     @Test
     public void addingClassifiedNewsSetsId() throws Exception {
-        ClassifiedNews testClassified = setupClassifiedNews();
+        ClassifiedNews testClassified = setupAnotherClassifiedNews();
         assertEquals(1, testClassified.getId());
     }
     @Test
@@ -49,6 +58,16 @@ public class Sql2oClassifiedNewsDaoTest {
         ClassifiedNews classifiedNews1 = setupClassifiedNews();
         ClassifiedNews classifiedNews2 = setupAnotherClassifiedNews();
         assertEquals(2, classifiedNewsDao.getClassifiedNews().size());
+    }
+
+@Test
+    public void getAllDepartmentsForAClassifiedNews(){
+        Department department = setUpDepartment();
+        departmentDao.add(department);
+        ClassifiedNews classifiedNews = setupClassifiedNews();
+        classifiedNewsDao.add(classifiedNews);
+        classifiedNewsDao.addClassifiedNewsToDepartment(classifiedNews,department);
+        assertEquals(1, classifiedNewsDao.getAllDepartmentsForAClassifiedNews(classifiedNews.getId()).size());
     }
     @Test
     public void deleteById() throws Exception {
