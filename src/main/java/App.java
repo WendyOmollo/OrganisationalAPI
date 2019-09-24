@@ -52,11 +52,11 @@ public class App {
                     int employeeId = Integer.parseInt(request.params("id"));
                     return gson.toJson(departmentDao.findById(employeeId));
                 });
-                get("/classifiedNews", "", (request, response) -> {
+                get("/classifiednews", "", (request, response) -> {
                     return gson.toJson(classifiedNewsDao.getClassifiedNews());
                 });
 
-                get("/classifiedNews/:id", "application/json", (request, response) -> {
+                get("/classifiednews/:id", "application/json", (request, response) -> {
                     int classifiedId = Integer.parseInt(request.params("id"));
                     return gson.toJson(classifiedNewsDao.findById(classifiedId));
                 });
@@ -74,12 +74,13 @@ public class App {
                     return gson.toJson(employee);
                 });
 
-                post("/classifiedNews/new","application/json",(request, response) -> {
+                post("/classifiednews/new","application/json",(request, response) -> {
                     ClassifiedNews classifiedNews = gson.fromJson(request.body(),ClassifiedNews.class);
                     classifiedNewsDao.add(classifiedNews);
                     response.status(201);
                     return gson.toJson(classifiedNews);
                 });
+
                 exception(ApiException.class, (exc, req, res) -> {
                     ApiException err = (ApiException) exc;
                     Map<String, Object> jsonMap = new HashMap<>();
